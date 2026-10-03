@@ -58,7 +58,7 @@ function md_to_notebook(md_file, out_file = joinpath(dirname(md_file), "..", "..
         Dict(
             "cell_type" => "code",
             "execution_count" => nothing,
-            "metadata" => Dict(),
+            "metadata" => Dict("language" => "julia"),
             "outputs" => [],
             "source" => [cell.source]
         )

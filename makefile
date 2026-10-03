@@ -14,20 +14,24 @@ uninstall:
 	$(MAKE) -C HomotopyCategories uninstall
 	$(MAKE) -C DerivedCategories uninstall
 
+gen-basic:
+	$(MAKE) -C TriangulatedCategories gen-basic
+	$(MAKE) -C ComplexesCategories gen-basic
+	$(MAKE) -C Bicomplexes gen-basic
+	$(MAKE) -C HomotopyCategories gen-basic
+	$(MAKE) -C DerivedCategories gen-basic
+	$(MAKE) gen-root
+
 gen:
 	$(MAKE) -C TriangulatedCategories gen
 	$(MAKE) -C ComplexesCategories gen
 	$(MAKE) -C Bicomplexes gen
 	$(MAKE) -C HomotopyCategories gen
 	$(MAKE) -C DerivedCategories gen
+	$(MAKE) gen-root
 
-
-gen-full:
-	$(MAKE) -C TriangulatedCategories gen-full
-	$(MAKE) -C ComplexesCategories gen-full
-	$(MAKE) -C Bicomplexes gen-full
-	$(MAKE) -C HomotopyCategories gen-full
-	$(MAKE) -C DerivedCategories gen-full
+gen-root:
+	ansible-playbook -i $$HOME/.gap/PackageJanitor/gap_to_julia/hosts $$HOME/.gap/PackageJanitor/gap_to_julia/site.yml -l HigherHomologicalAlgebra_root --diff
 
 test:
 	$(MAKE) -C TriangulatedCategories test
@@ -56,3 +60,6 @@ git-commit:
 	$(MAKE) -C Bicomplexes git-commit
 	$(MAKE) -C HomotopyCategories git-commit
 	$(MAKE) -C DerivedCategories git-commit
+
+update-subsplits:
+	./dev/manually_update_subsplits.sh

@@ -7,6 +7,12 @@ authors = [
 # Transpiled from GAP's TriangulatedCategories v2026.07-01
 version = "0.1.0"
 
+# Current dependencies of GAP's TriangulatedCategories v2026.07-01
+# NeededOtherPackages:
+#   GAPDoc >= 1.5
+#   CAP >= 2024.09-12
+# SuggestedOtherPackages:
+
 [deps]
 CAP = "d64df2ee-d2bb-46f4-8cbc-f03bb858f8cb"
 

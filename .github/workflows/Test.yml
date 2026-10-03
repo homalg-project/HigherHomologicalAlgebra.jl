@@ -7,6 +7,7 @@ on:
   pull_request:
   schedule:
     - cron: "0 0 * * *"  # Run every day at midnight
+  workflow_dispatch:
 permissions:
   contents: write
 
@@ -17,19 +18,51 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  prepare_matrices:
+    name: Load CI test group config
+    runs-on: ubuntu-latest
+    outputs:
+      package_groups: ${{ steps.load.outputs.package_groups }}
+      split_groups: ${{ steps.load.outputs.split_groups }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Load CI test group config
+        id: load
+        run: |
+          package_groups=$(jq -c '.packages' .github/ci_package_groups.json)
+
+          # any package may opt into split testing by adding its own
+          # docs/src/ci_test_groups.json (discovered automatically, no
+          # package name needs to be hardcoded here)
+          shopt -s nullglob
+          split_groups=$(
+            for config_path in */docs/src/ci_test_groups.json; do
+              package="${config_path%%/*}"
+              jq -c --arg package "$package" '.groups[] | . + {package: $package}' "$config_path"
+            done | jq -cs '.'
+          )
+
+          echo "package_groups=$package_groups" >> "$GITHUB_OUTPUT"
+          echo "split_groups=$split_groups" >> "$GITHUB_OUTPUT"
+
+          echo "package_groups:"
+          echo "$package_groups" | jq '.'
+          echo "split_groups:"
+          echo "$split_groups" | jq '.'
+
   test:
-    name: ${{ matrix.package }} - Julia ${{ matrix.julia-version }} on ${{ matrix.os }}
+    needs: prepare_matrices
+    name: ${{ join(matrix.packages, ', ') }} - Julia ${{ matrix.julia-version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
-        package:
-          - TriangulatedCategories
-          - ComplexesCategories
-          - Bicomplexes
-          - HomotopyCategories
-          - DerivedCategories
+        # groups are loaded from .github/ci_package_groups.json by prepare_matrices
+        packages: ${{ fromJson(needs.prepare_matrices.outputs.package_groups) }}
         julia-version:
           - '1.12'
           - 'nightly'
@@ -45,32 +78,93 @@ jobs:
         uses: julia-actions/setup-julia@v3
         with:
           version: ${{ matrix.julia-version }}
-      - name: Clone and install CAP_project.jl
-        run: |
-          git clone https://github.com/kamalsaleh/CAP_project.jl.git ../CAP_project.jl
-          make -C ../CAP_project.jl install
       - name: Clone and install MatricesForHomalg.jl
         run: |
-          git clone https://github.com/kamalsaleh/MatricesForHomalg.jl.git ../MatricesForHomalg.jl
+          git clone https://github.com/homalg-project/MatricesForHomalg.jl.git ../MatricesForHomalg.jl
           julia -e 'using Pkg; Pkg.develop(path="../MatricesForHomalg.jl")'
+
+      - name: Clone and install CAP_project.jl
+        run: |
+          git clone https://github.com/homalg-project/CAP_project.jl.git ../CAP_project.jl
+          make -C ../CAP_project.jl install
+
       - name: Clone and install CategoricalTowers.jl
         run: |
-          git clone https://github.com/kamalsaleh/CategoricalTowers.jl.git ../CategoricalTowers.jl
+          git clone https://github.com/homalg-project/CategoricalTowers.jl.git ../CategoricalTowers.jl
           make -C ../CategoricalTowers.jl install
+
       - name: Install all packages
         run: make install
       - name: Set up Jupyter
         run: pip install jupyter nbconvert --quiet
       - name: Run tests
-        run: make -C ${{ matrix.package }} test
+        run: |
+          for pkg in ${{ join(matrix.packages, ' ') }}; do
+            make -C "$pkg" test
+          done
       - name: Test notebooks
         run: |
           julia -e 'using Pkg; Pkg.add("Singular"); Pkg.add("IJulia"); using IJulia; installkernel("Julia")'
-          sed -i '/"--project=@\."/d' ~/.local/share/jupyter/kernels/julia-*/kernel.json
-          make -C ${{ matrix.package }} test-notebooks
+          sed -i '/"--project=@\\."/d' ~/.local/share/jupyter/kernels/julia-*/kernel.json
+          for pkg in ${{ join(matrix.packages, ' ') }}; do
+            if make -C "$pkg" -n test-notebooks >/dev/null 2>&1; then
+              make -C "$pkg" test-notebooks
+            fi
+          done
+
+  test_split:
+    needs: prepare_matrices
+    # an empty matrix (no package opts into split testing) can hang
+    # instead of being skipped, so skip the job outright in that case
+    if: needs.prepare_matrices.result == 'success' && needs.prepare_matrices.outputs.split_groups != '[]'
+    name: ${{ matrix.group.package }} (${{ matrix.group.group }}) - Julia ${{ matrix.julia-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        # groups are loaded from every */docs/src/ci_test_groups.json by prepare_matrices
+        group: ${{ fromJson(needs.prepare_matrices.outputs.split_groups) }}
+        julia-version:
+          - '1.12'
+          - 'nightly'
+        os:
+          - ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Julia
+        uses: julia-actions/setup-julia@v3
+        with:
+          version: ${{ matrix.julia-version }}
+      - name: Clone and install MatricesForHomalg.jl
+        run: |
+          git clone https://github.com/homalg-project/MatricesForHomalg.jl.git ../MatricesForHomalg.jl
+          julia -e 'using Pkg; Pkg.develop(path="../MatricesForHomalg.jl")'
+
+      - name: Clone and install CAP_project.jl
+        run: |
+          git clone https://github.com/homalg-project/CAP_project.jl.git ../CAP_project.jl
+          make -C ../CAP_project.jl install
+
+      - name: Clone and install CategoricalTowers.jl
+        run: |
+          git clone https://github.com/homalg-project/CategoricalTowers.jl.git ../CategoricalTowers.jl
+          make -C ../CategoricalTowers.jl install
+
+      - name: Install all packages
+        run: make install
+      - name: Run tests
+        env:
+          DOCTEST_FILES: ${{ join(matrix.group.files, ',') }}
+        run: make -C "${{ matrix.group.package }}" test
+
   update_subsplits:
     name: Update subsplits
-    needs: test
+    needs: [test, test_split]
     runs-on: ubuntu-latest
     if: false  # enable this job when you move the repository to homalg-project
     steps:

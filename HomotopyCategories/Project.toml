@@ -7,6 +7,17 @@ authors = [
 # Transpiled from GAP's HomotopyCategories v2026.07-02
 version = "0.1.1"
 
+# Current dependencies of GAP's HomotopyCategories v2026.07-02
+# NeededOtherPackages:
+#   CAP >= 2026.05-02
+#   FpLinearCategories >= 2026.07-02
+#   ComplexesCategories >= 2026.07-01
+#   TriangulatedCategories >= 2022.07-01
+#   QuotientCategories >= 2026.04-01
+#   SubcategoriesForCAP >= 2026.04-01
+#   FreydCategoriesForCAP 2026.04-01
+# SuggestedOtherPackages:
+
 [deps]
 CAP = "d64df2ee-d2bb-46f4-8cbc-f03bb858f8cb"
 MatricesForHomalg = "29b9b1b6-efa6-450e-8188-a5a2c25df071"

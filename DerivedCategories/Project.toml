@@ -7,6 +7,15 @@ authors = [
 # Transpiled from GAP's DerivedCategories v2026.07-03
 version = "0.1.1"
 
+# Current dependencies of GAP's DerivedCategories v2026.07-03
+# NeededOtherPackages:
+#   CAP >= 2026.05-02
+#   SubcategoriesForCAP >= 2026.04-01
+#   HomotopyCategories >= 2026.07-01
+#   ToolsForHigherHomologicalAlgebra >= 2026.04-01
+#   FpCategories >= 2026.07-03
+# SuggestedOtherPackages:
+
 [deps]
 MatricesForHomalg = "29b9b1b6-efa6-450e-8188-a5a2c25df071"
 CAP = "d64df2ee-d2bb-46f4-8cbc-f03bb858f8cb"

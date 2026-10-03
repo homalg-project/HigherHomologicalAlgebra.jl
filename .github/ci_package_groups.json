@@ -1,0 +1,10 @@
+{
+  "_comment": "Groups of packages tested together in one CI job (see workflows/Test.yml). Edit freely to rebalance CI jobs as packages are added/removed or change in cost.",
+  "packages": [
+    ["TriangulatedCategories"],
+    ["ComplexesCategories"],
+    ["Bicomplexes"],
+    ["HomotopyCategories"],
+    ["DerivedCategories"]
+  ]
+}

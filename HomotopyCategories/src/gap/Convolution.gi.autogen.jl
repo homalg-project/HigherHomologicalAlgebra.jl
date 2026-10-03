@@ -42,7 +42,7 @@
                     i -> UniversalMorphismIntoDirectSumWithGivenDirectSum( cat, [ C[u-1][i], C[u][i-1] ], C[u-2][i], [ f[i], w[i] ], st_cocone[i] ),
                     st_cocone );
         
-        return CreateComplex( complexes_cat, @Concatenation( List( (l):(u-3), i -> C^i ), [ delta ] ), l ); # supported at (l):(u-1) == (l):(m)
+        return CreateComplex( complexes_cat, @Concatenation( List( (l):(u-3), i -> C^i ), [ delta ] ), l ); # supported at [ l .. u-1 ] == [ l .. m ]
         
       else
         
