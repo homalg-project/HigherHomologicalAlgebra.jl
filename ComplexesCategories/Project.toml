@@ -31,7 +31,7 @@ FpLinearCategories = "607c1b85-d155-426e-91c9-9defd76aa9e1"
 [extensions]
 
 [compat]
-CAP = "~0.8.9"
+CAP = "~0.8.19"
 PresheafCategories = "~0.1.5"
 MatricesForHomalg = "~0.1.9"
 AdditiveClosuresForCAP = "~0.2.4"
