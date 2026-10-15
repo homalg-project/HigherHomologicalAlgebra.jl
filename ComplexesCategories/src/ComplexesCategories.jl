@@ -12,6 +12,8 @@ using FreydCategoriesForCAP
 
 using PresheafCategories
 
+using TriangulatedCategories
+
 include("pre_init.jl")
 
 include("init.jl")

@@ -19,6 +19,7 @@ version = "0.1.0"
 MatricesForHomalg = "29b9b1b6-efa6-450e-8188-a5a2c25df071"
 CAP = "d64df2ee-d2bb-46f4-8cbc-f03bb858f8cb"
 ComplexesCategories = "25740295-7925-405d-8250-6795ea33aeec"
+TriangulatedCategories = "7529282d-5a2e-4f9e-a096-9460618321a6"
 
 [weakdeps]
 FpCategories = "b9f20f1b-1226-4811-b6a0-b2e47a225553"
@@ -36,7 +37,8 @@ FpCategories = "~0.1.14"
 FpLinearCategories = "~0.2.4"
 AdditiveClosuresForCAP = "~0.2.5"
 FreydCategoriesForCAP = "~0.2.5"
-julia = "1.11"
+TriangulatedCategories = "0.1"
+julia = "1.12"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
