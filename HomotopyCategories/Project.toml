@@ -5,7 +5,7 @@ authors = [
 ]
 
 # Transpiled from GAP's HomotopyCategories v2026.07-02
-version = "0.1.1"
+version = "0.1.2"
 
 # Current dependencies of GAP's HomotopyCategories v2026.07-02
 # NeededOtherPackages:
@@ -54,8 +54,8 @@ QuotientCategories = "~0.2.3"
 SubcategoriesForCAP = "~0.1.1"
 FreydCategoriesForCAP = "~0.2.4"
 FiniteCocompletions = "0.1"
-FunctorCategories = "0.1"
-julia = "1.11"
+FunctorCategories = "~0.1.1"
+julia = "1.12"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
