@@ -11,3 +11,7 @@ include( "gap/Morphisms.gd.autogen.jl" );
 include( "gap/Functors.gd.autogen.jl" );
 include( "gap/Resolutions.gd.autogen.jl" );
 include( "gap/NaturalTransformations.gd.autogen.jl" );
+
+#= comment for Julia
+include( "gap/LaTeX.gd.autogen.jl" );
+# =#

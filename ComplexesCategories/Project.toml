@@ -4,13 +4,12 @@ authors = [
 	"Kamal Saleh <kamal.saleh@uni-siegen.de>"
 ]
 
-# Transpiled from GAP's ComplexesCategories v2026.07-02
-version = "0.1.2"
+# Transpiled from GAP's ComplexesCategories v2026.10-02
+version = "0.1.3"
 
-# Current dependencies of GAP's ComplexesCategories v2026.07-02
+# Current dependencies of GAP's ComplexesCategories v2026.10-02
 # NeededOtherPackages:
 #   CAP >= 2026.05-02
-#   ToolsForHigherHomologicalAlgebra >= 2026.04-01
 #   PresheafCategories >= 2026.07-01
 #   AdditiveClosuresForCAP >= 2026.06-03
 #   FreydCategoriesForCAP >= 2026.06-04
@@ -23,6 +22,7 @@ CAP = "d64df2ee-d2bb-46f4-8cbc-f03bb858f8cb"
 AdditiveClosuresForCAP = "bbee75d5-3cb4-4478-8ae7-eddc7864e69e"
 FreydCategoriesForCAP = "cec356e3-7627-4f73-8308-af32cbf46c2b"
 PresheafCategories = "7356a560-9b13-4027-8f83-9f0b8f55db70"
+TriangulatedCategories = "7529282d-5a2e-4f9e-a096-9460618321a6"
 
 [weakdeps]
 FpCategories = "b9f20f1b-1226-4811-b6a0-b2e47a225553"
@@ -31,14 +31,15 @@ FpLinearCategories = "607c1b85-d155-426e-91c9-9defd76aa9e1"
 [extensions]
 
 [compat]
-CAP = "~0.8.9"
+CAP = "~0.8.19"
 PresheafCategories = "~0.1.5"
 MatricesForHomalg = "~0.1.9"
 AdditiveClosuresForCAP = "~0.2.4"
 FreydCategoriesForCAP = "~0.2.4"
 FpCategories = "~0.1.14"
 FpLinearCategories = "~0.2.4"
-julia = "1.11"
+TriangulatedCategories = "0.1"
+julia = "1.12"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
