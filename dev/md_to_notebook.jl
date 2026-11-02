@@ -5,25 +5,23 @@
 using JSON3
 
 function md_to_notebook(md_file, out_file = joinpath(dirname(md_file), "..", "..", "notebooks", replace(basename(md_file), r"\.md$" => ".ipynb")))
-    
     src = read(md_file, String)
-    
+
     # Extract the jldoctest block
     m = match(r"```jldoctest[^\n]*\n(.*?)```"s, src)
     if m === nothing
         error("No jldoctest block found in $md_file")
     end
     block = m.captures[1]
-    
+
     lines = split(block, '\n')
-    
+
     cells = []
-    current_code = String[]
-    
+
     i = 1
     while i <= length(lines)
         line = lines[i]
-        
+
         if startswith(line, "julia> ")
             # Collect this input block (may span multiple lines)
             code = line[8:end]  # strip "julia> "
@@ -52,7 +50,7 @@ function md_to_notebook(md_file, out_file = joinpath(dirname(md_file), "..", "..
             i += 1
         end
     end
-    
+
     # Build notebook JSON
     nb_cells = map(cells) do cell
         Dict(
@@ -63,7 +61,7 @@ function md_to_notebook(md_file, out_file = joinpath(dirname(md_file), "..", "..
             "source" => [cell.source]
         )
     end
-    
+
     nb = Dict(
         "cells" => nb_cells,
         "metadata" => Dict(
@@ -77,7 +75,7 @@ function md_to_notebook(md_file, out_file = joinpath(dirname(md_file), "..", "..
         "nbformat" => 4,
         "nbformat_minor" => 5
     )
-    
+
     if isfile(out_file)
         print("\"$out_file\" already exists. Overwrite? [y/N] ")
         answer = readline()
@@ -90,7 +88,7 @@ function md_to_notebook(md_file, out_file = joinpath(dirname(md_file), "..", "..
     open(out_file, "w") do f
         JSON3.pretty(f, nb)
     end
-    
+
     println("Written: $out_file  ($(length(cells)) cells)")
     return out_file
 end

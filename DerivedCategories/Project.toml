@@ -4,15 +4,14 @@ authors = [
 	"Kamal Saleh <kamal.saleh@uni-siegen.de>"
 ]
 
-# Transpiled from GAP's DerivedCategories v2026.07-03
+# Transpiled from GAP's DerivedCategories v2026.10-01
 version = "0.1.1"
 
-# Current dependencies of GAP's DerivedCategories v2026.07-03
+# Current dependencies of GAP's DerivedCategories v2026.10-01
 # NeededOtherPackages:
 #   CAP >= 2026.05-02
 #   SubcategoriesForCAP >= 2026.04-01
 #   HomotopyCategories >= 2026.07-01
-#   ToolsForHigherHomologicalAlgebra >= 2026.04-01
 #   FpCategories >= 2026.07-03
 # SuggestedOtherPackages:
 

@@ -4,27 +4,27 @@ install:
 	julia -e 'using Pkg; Pkg.develop(path=".");'
 
 uninstall:
-	julia -e 'using Pkg; Pkg.rm("ComplexesCategories");'
+	julia -e 'using Pkg; haskey(Pkg.project().dependencies, "ComplexesCategories") ? Pkg.rm("ComplexesCategories") : println("\033[94mComplexesCategories is not installed or already removed, skipping.\033[0m");'
 
 test:
 	julia -e 'using Pkg; Pkg.test("ComplexesCategories");'
-
-convert-to-notebook:
-	@test -n "$(FILE)" || (echo "Usage: make convert-to-notebook FILE=docs/src/file_name.md"; exit 1)
-	@test -f "$(FILE)" || (echo "File not found: $(FILE)"; exit 1)
-	julia ../dev/md_to_notebook.jl "$(FILE)"
 
 gen-basic:
 	rm -f ./src/gap/*.autogen.jl
 	rm -f ./src/gap/*/*.autogen.jl
 	rm -f ./docs/src/*.autogen.md
-	./.generate.sh -e gen_full=0
+	./.generate.sh -e gen_basic=1
 
 gen:
 	rm -f ./src/gap/*.autogen.jl
 	rm -f ./src/gap/*/*.autogen.jl
 	rm -f ./docs/src/*.autogen.md
-	./.generate.sh -e gen_full=1
+	./.generate.sh -e gen_basic=0
+
+convert-to-notebook:
+	@test -n "$(FILE)" || (echo "Usage: make convert-to-notebook FILE=docs/src/file_name.md"; exit 1)
+	@test -f "$(FILE)" || (echo "File not found: $(FILE)"; exit 1)
+	julia ../dev/md_to_notebook.jl "$(FILE)"
 
 git-commit:
 	@if git diff Project.toml | grep -q '^+version ='; then \

@@ -11,7 +11,7 @@
     local category;
     
     #= comment for Julia
-    if (IsPackageMarkedForLoading( "Locales", ">= 2023.05-05" ))
+    if (IsPackageMarkedForLoading( "LocalesForCAP", ">= 2023.05-05" ))
         
         return ValueGlobal( "TotalOrderAsCategory" )( "IsInt", (a,b) -> a >= b );
         
