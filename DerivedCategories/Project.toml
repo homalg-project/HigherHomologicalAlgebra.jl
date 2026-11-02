@@ -5,7 +5,7 @@ authors = [
 ]
 
 # Transpiled from GAP's DerivedCategories v2026.10-01
-version = "0.1.1"
+version = "0.1.0"
 
 # Current dependencies of GAP's DerivedCategories v2026.10-01
 # NeededOtherPackages:
@@ -38,7 +38,7 @@ HomotopyCategories = "f0c53ac8-2cb1-47b4-9ede-2340aeeefb7b"
 [compat]
 MatricesForHomalg = "~0.1.9"
 CAP = "~0.8.10"
-SubcategoriesForCAP = "~0.1.3"
+SubcategoriesForCAP = "~0.1.0"
 LinearAlgebraForCAP = "~0.2.3"
 HomotopyCategories = "~0.1.0"
 FpCategories = "~0.1.13"
