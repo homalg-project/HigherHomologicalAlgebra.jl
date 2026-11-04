@@ -83,15 +83,13 @@ jobs:
           git clone https://github.com/homalg-project/MatricesForHomalg.jl.git ../MatricesForHomalg.jl
           julia -e 'using Pkg; Pkg.develop(path="../MatricesForHomalg.jl")'
 
-      - name: Clone and install CAP_project.jl
+      - name: Clone and install CAP_project.jl and CategoricalTowers.jl
         run: |
-          git clone https://github.com/homalg-project/CAP_project.jl.git ../CAP_project.jl
-          make -C ../CAP_project.jl install
-
-      - name: Clone and install CategoricalTowers.jl
-        run: |
-          git clone https://github.com/homalg-project/CategoricalTowers.jl.git ../CategoricalTowers.jl
-          make -C ../CategoricalTowers.jl install
+          cd ..
+          git clone https://github.com/homalg-project/CAP_project.jl.git
+          git clone https://github.com/kamalsaleh/CategoricalTowers.jl.git
+          make -C CAP_project.jl install
+          make -C CategoricalTowers.jl install
 
       - name: Install all packages
         run: make install
